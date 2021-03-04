@@ -1,0 +1,69 @@
+
+/* Div Element Styling */
+  .outer-div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+  }
+  
+  .button-bar {
+    margin: 1rem;
+    background-color: white;
+    padding: 10px;
+  }
+  .wrapper{
+    background-color: blue;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .grid-wrapper {
+    flex: 1 1 auto;
+    box-shadow: 2px 2px 5px 2px grey;
+    background-color: white;
+   
+  }
+
+
+/* Row Styling */
+
+.ag-row-hover {
+    /* putting in !important so it overrides the theme's styling as it hovers the row also */
+    background-color: #d0d0d6 !important;
+  }
+
+  /* Filter options/buttons */
+#filter-text-box{
+    padding-right: 25px
+}
+#search-btn{
+    padding-right: 60px
+}
+
+
+
+
+
+  .rag-red {
+    background-color: lightcoral;
+  }
+  .rag-green {
+    background-color: lightgreen;
+  }
+  .rag-amber {
+    background-color: lightsalmon;
+  }
+  
+  .rag-red-outer .rag-element {
+    background-color: lightcoral;
+  }
+  
+  .rag-green-outer .rag-element {
+    background-color: lightgreen;
+  }
+  
+  .rag-amber-outer .rag-element {
+    background-color: lightsalmon;
+  }
+
