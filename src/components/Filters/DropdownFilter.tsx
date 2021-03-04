@@ -5,6 +5,10 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
 
+import InputLabel from "@material-ui/core/InputLabel";
+
+import Select from "@material-ui/core/Select";
+
 export default class Dropdown extends React.Component<MyProps, MyState> {
   gridApi: any;
   gridColumnApi: any;
@@ -58,7 +62,6 @@ export default class Dropdown extends React.Component<MyProps, MyState> {
   };
 
   updateData = (data: any) => {
-   
     this.setState({ rowData: data });
   };
 
@@ -77,9 +80,9 @@ export default class Dropdown extends React.Component<MyProps, MyState> {
   };
   //DROPDOWN FILTERS
   externalFilterChanged = (newValue: any) => {
-    stateLocation = newValue;
+    stateLocation = newValue.target.value;
     this.gridApi.onFilterChanged();
-    console.log(newValue)
+    console.log(newValue);
   };
 
   isExternalFilterPresent = () => {
@@ -89,7 +92,7 @@ export default class Dropdown extends React.Component<MyProps, MyState> {
   doesExternalFilterPass = (node: any) => {
     switch (stateLocation) {
       case "0":
-        return node.data.state === "everyone";
+        return node.data.state  === "everyone";
       case "1":
         return node.data.state === "NSW";
       case "2":
@@ -104,21 +107,26 @@ export default class Dropdown extends React.Component<MyProps, MyState> {
   render() {
     return (
       <div>
-        <div className="filter-bar">
-      
-          <select
-            name="stateLocation"
-            id="stateLocation"
-            onChange={() => this.externalFilterChanged(stateLocation)}
-          >
-            <option value='0' id="0" >All</option>
-            <option value='1' id="1" >NSW</option>
-            <option value='2' id="2">VIC</option>
-            <option value='3' id="3">
-              QLD
-            </option>
-          </select>
-        </div>
+        <InputLabel id="demo-simple-select-label">State:</InputLabel>
+        <Select
+          name="stateLocation"
+          id="demo-simple-select-label"
+          onChange={this.externalFilterChanged}
+          placeholder="State"
+        >
+          <option value="0" id="0">
+            All
+          </option>
+          <option value="1" id="1">
+            NSW
+          </option>
+          <option value="2" id="2">
+            VIC
+          </option>
+          <option value="3" id="3">
+            QLD
+          </option>
+        </Select>
 
         <div className="ag-theme-material" style={{ height: "1400px" }}>
           <AgGridReact
