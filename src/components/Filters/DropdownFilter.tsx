@@ -4,12 +4,29 @@ import { MyState } from "./DataTypes";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
-
+import "./style.css";
+import { Theme, withStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 
+import { Styles } from "@material-ui/styles";
+import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
-export default class Dropdown extends React.Component<MyProps, MyState> {
+const useStyles: Styles<Theme, {}, string> = (theme: Theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+});
+
+interface IProps {
+  classes?: any;
+}
+
+class FirmList extends React.Component<MyProps, MyState, IProps> {
   gridApi: any;
   gridColumnApi: any;
 
@@ -80,53 +97,109 @@ export default class Dropdown extends React.Component<MyProps, MyState> {
   };
   //DROPDOWN FILTERS
   externalFilterChanged = (newValue: any) => {
-    stateLocation = newValue.target.value;
+    listFilter = newValue.target.value;
     this.gridApi.onFilterChanged();
-    console.log(newValue);
   };
 
   isExternalFilterPresent = () => {
-    return stateLocation !== "everyone";
+    return listFilter !== "everyone";
   };
-  //SWITCH STATEMENT > USERS
+  //SWITCH STATEMENT > State
   doesExternalFilterPass = (node: any) => {
-    switch (stateLocation) {
+    switch (listFilter) {
       case "0":
-        return node.data.state  === "everyone";
+        return true;
       case "1":
         return node.data.state === "NSW";
       case "2":
         return node.data.state === "VIC";
       case "3":
         return node.data.state === "QLD";
+      case "4":
+        return node.data.status === 1;
+      case "5":
+        return node.data.status === 2;
+      case "6":
+        return node.data.isTestFirm === true;
+      case "7":
+        return node.data.isTestFirm === false;
       default:
         return true;
     }
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
-        <InputLabel id="demo-simple-select-label">State:</InputLabel>
-        <Select
-          name="stateLocation"
-          id="demo-simple-select-label"
-          onChange={this.externalFilterChanged}
-          placeholder="State"
-        >
-          <option value="0" id="0">
-            All
-          </option>
-          <option value="1" id="1">
-            NSW
-          </option>
-          <option value="2" id="2">
-            VIC
-          </option>
-          <option value="3" id="3">
-            QLD
-          </option>
-        </Select>
+        <div className="filter-bar">
+          <input
+            type="search"
+            onChange={this.handleQuickFilter}
+            id="filter-text-box"
+            placeholder="Search"
+          ></input>{" "}
+          <InputLabel id="outlined-age-native-simple">State</InputLabel>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <Select
+              native
+              name="by-state"
+              id="demo-simple-select-label"
+              onChange={this.externalFilterChanged}
+            >
+              <option value="0" id="0">
+                ALL
+              </option>
+              <option value="1" id="1">
+                NSW
+              </option>
+              <option value="2" id="2">
+                VIC
+              </option>
+              <option value="3" id="3">
+                QLD
+              </option>
+            </Select>
+          </FormControl>
+          <InputLabel id="outlined-age-native-simple">Status</InputLabel>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <Select
+              native
+              name="by-status"
+              id="demo-simple-select-label"
+              onChange={this.externalFilterChanged}
+            >
+              <option value="0" id="0">
+                ALL
+              </option>
+              <option value="4" id="4">
+                Enabled
+              </option>
+              <option value="5" id="5">
+                Disabled
+              </option>
+            </Select>
+          </FormControl>
+          <InputLabel id="outlined-age-native-simple">Status</InputLabel>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <Select
+              native
+              name="by-status"
+              id="demo-simple-select-label"
+              onChange={this.externalFilterChanged}
+            >
+              <option value="0" id="0">
+                ALL
+              </option>
+              <option value="6" id="6">
+                Test Firm
+              </option>
+              <option value="7" id="7">
+                Live Firm
+              </option>
+            </Select>
+          </FormControl>
+        </div>
 
         <div className="ag-theme-material" style={{ height: "1400px" }}>
           <AgGridReact
@@ -142,5 +215,6 @@ export default class Dropdown extends React.Component<MyProps, MyState> {
     );
   }
 }
-var stateLocation = "everyone";
-console.log(stateLocation);
+var listFilter = "everyone";
+
+export default withStyles(useStyles)(FirmList);
